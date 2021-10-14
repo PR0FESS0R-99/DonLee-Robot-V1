@@ -7,11 +7,11 @@ class Translation(object):
 
 <b>Just Add Me To Your Group And Channel And Connect Them And See My Pevers 🔥🔥😝</b>
 
-<b>Subscribe to the update channel to learn about my updates and activity...</b>
+
 
 <b>Press /help to know about available commands🤪</b>
 
-<b>Maintained By @Mo_Tech_YT</b>"""    
+<b>Maintained By @joel_boban</b>"""    
     
     HELP_TEXT = """
 <b><u>Notice</u></b>
@@ -36,7 +36,7 @@ Rating Not Available</codd>
             
    ☞ <code>Status</code> - <b>Button Will Shows The Stats Of Your Channel</b>
 
-Maintained By @Mo_Tech_YT"""
+Maintained By @joel_boban"""
     
     ABOUT_TEXT = """
 <b>➥ 🤖Bot</b> : <b>Adv Auto Filter Bot v2.9</b>
