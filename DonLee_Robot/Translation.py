@@ -43,7 +43,7 @@ Maintained By @Mo_Tech_YT"""
     
 <b>➥ 😎Creator</b> : <b>@AlbertEinstein_TG</b> 
 
-<b>➥ 👨‍💻Editor</b> : <b>@Mrk_YT</b>
+<b>➥ 👨‍💻Edited byr</b> : <b>@joel_boban</b>
 
 <b>➥ 🗣️Language</b> : <b>Python3</b>
 
