@@ -58,7 +58,7 @@ async def start(bot, update):
                         [
                             Mo_Tech_YT.MO_TECH_YT_02
                                 (
-                                    DEPLOY, url=HEROKU
+                                    '𝐀𝐛𝐨𝐮𝐭', callback_data='about'
                                 )
                         ]
                     ]
@@ -83,7 +83,7 @@ async def start(bot, update):
                   [
                       Mo_Tech_YT.MO_TECH_YT_02
                           (
-                              DEPLOY, url=HEROKU
+                              '𝐀𝐛𝐨𝐮𝐭', callback_data='about'
                           )
                   ],
                   [
@@ -112,17 +112,17 @@ async def help(bot, update):
                   [
                       Mo_Tech_YT.MO_TECH_YT_02
                           (
-                              DEPLOY, url=HEROKU
+                              '𝐎𝐮𝐫 𝐆𝐫𝐨𝐮𝐩', url='t.me/askmecinema'
                           )
                   ],
                   [   
                       Mo_Tech_YT.MO_TECH_YT_02
                           (
-                              '🏡 Home', callback_data='start'
+                              'Home', callback_data='start'
                           ),
                       Mo_Tech_YT.MO_TECH_YT_02
                           (
-                              'About💡', callback_data='about'
+                              'About', callback_data='about'
                           )
                   ]
               ]
@@ -145,17 +145,17 @@ async def about(bot, update):
                   [
                       Mo_Tech_YT.MO_TECH_YT_02
                           (
-                              DEPLOY, url=HEROKU
+                              'About', callback_data='about'
                           )
                   ],
                   [
                       Mo_Tech_YT.MO_TECH_YT_02
                           (
-                              '🏠 Home', callback_data='start'
+                              'Home', callback_data='start'
                           ),
                       Mo_Tech_YT.MO_TECH_YT_02
                           (
-                              'Close ❌️', callback_data='close'
+                              'Close', callback_data='close'
                           )
                   ]
               ]
