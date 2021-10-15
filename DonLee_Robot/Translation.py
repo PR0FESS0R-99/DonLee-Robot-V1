@@ -1,7 +1,7 @@
 import os
 class Translation(object):
   
-    START_TEXT = """app.send_photo("me", "photo.jpg", caption="<b>𝐇𝐞𝐥𝐥𝐨👋 {}!!</b>
+    app.send_photo("me", "photo.jpg", caption=START_TEXT = """<b>𝐇𝐞𝐥𝐥𝐨👋 {}!!</b>
 
 <b>𝐈 𝐚𝐦 𝐀𝐫𝐢𝐬𝐮 𝐚 𝐏𝐫𝐨 𝐀𝐮𝐭𝐨 𝐅𝐢𝐥𝐭𝐞𝐫 𝐁𝐨𝐭</b>
 
@@ -11,7 +11,7 @@ class Translation(object):
 
 <b>𝐏𝐫𝐞𝐬𝐬 /help 𝐓𝐨 𝐓𝐞𝐬𝐭 𝐌𝐲 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬😃</b>
 
-<b>𝐌𝐚𝐢𝐧𝐭𝐚𝐢𝐧𝐞𝐝 𝐁𝐲 @joel_boban</b>")"""    
+<b>𝐌𝐚𝐢𝐧𝐭𝐚𝐢𝐧𝐞𝐝 𝐁𝐲 @joel_boban</b>""" 
     
     HELP_TEXT = """
 <b><u>𝐍𝐨𝐭𝐢𝐜𝐞</u></b>
