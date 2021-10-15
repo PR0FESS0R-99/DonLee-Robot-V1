@@ -52,5 +52,5 @@ class Translation(object):
 
 ★ 𝐋𝐢𝐛𝐫𝐚𝐫𝐲 : 𝐏𝐲𝐫𝐨𝐠𝐫𝐚𝐦 𝐀𝐜𝐲𝐧𝐜𝐢𝐨 1.13.0
 
-★ 𝐒𝐨𝐮𝐫𝐜𝐞 𝐂𝐨𝐝𝐞 :  <a> href="https://t.me/nokkiirunnoippokittum">𝐂𝐥𝐢𝐜𝐤 𝐌𝐞</a>
+★ 𝐒𝐨𝐮𝐫𝐜𝐞 𝐂𝐨𝐝𝐞 :  <a href="https://t.me/nokkiirunnoippokittum">𝐂𝐥𝐢𝐜𝐤 𝐌𝐞</a>
 """
