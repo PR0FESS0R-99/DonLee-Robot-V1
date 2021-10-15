@@ -39,15 +39,17 @@ class Translation(object):
 𝐌𝐚𝐢𝐧𝐭𝐚𝐢𝐧𝐞𝐝 𝐁𝐲 @joel_boban"""
     
     ABOUT_TEXT = """
-<b>➥ 🤖𝐁𝐤𝐭</b> : <b>𝐀𝐝𝐯 𝐀𝐮𝐭𝐨 𝐅𝐢𝐥𝐭𝐞𝐫 𝐯2.9</b>
+<b>★ 𝐌𝐲 𝐍𝐚𝐦𝐞</𝐛> : <𝐛>𝐀𝐫𝐢𝐬𝐮</b>
+
+<b>★ 𝐁𝐨𝐭</b> : <b>𝐀𝐝𝐯 𝐀𝐮𝐭𝐨 𝐅𝐢𝐥𝐭𝐞𝐫 𝐯2.9</b>
     
-<b>➥ 😎𝐂𝐫𝐞𝐚𝐭𝐨𝐫</b> : <b>@AlbertEinstein_TG</b> 
+<b>★ 𝐂𝐫𝐞𝐚𝐭𝐨𝐫</b> : <b>@AlbertEinstein_TG</b> 
 
-<b>➥ 👨‍💻𝐄𝐝𝐢𝐭𝐞𝐝 𝐁𝐲</b> : <b>@joel_boban</b>
+<b>★ 𝐄𝐝𝐢𝐭𝐞𝐝 𝐁𝐲</b> : <b>@joel_boban</b>
 
-<b>➥ 🗣️𝐋𝐚𝐧𝐠𝐮𝐚𝐠𝐞</b> : <b>𝐏𝐲𝐭𝐡𝐨𝐧3</b>
+<b>★ 𝐋𝐚𝐧𝐠𝐮𝐚𝐠𝐞</b> : <b>𝐏𝐲𝐭𝐡𝐨𝐧3</b>
 
-<b>➥ 📚𝐋𝐢𝐛𝐫𝐚𝐫𝐲</b> : <b>𝐏𝐲𝐫𝐨𝐠𝐫𝐚𝐦 𝐀𝐜𝐲𝐧𝐜𝐢𝐨 1.13.0</b>
+<b>★ 𝐋𝐢𝐛𝐫𝐚𝐫𝐲</b> : <b>𝐏𝐲𝐫𝐨𝐠𝐫𝐚𝐦 𝐀𝐜𝐲𝐧𝐜𝐢𝐨 1.13.0</b>
 
-<b>➥ 📖𝐒𝐨𝐮𝐫𝐜𝐞 𝐂𝐨𝐝𝐞</b> : <b><a href="https://github.com/PR0FESS0R-99/DonLee_Robot">𝐂𝐥𝐢𝐜𝐤 𝐌𝐞</a></b>
+<b>★ 𝐒𝐨𝐮𝐫𝐜𝐞 𝐂𝐨𝐝𝐞</b> : <b><a href="https://github.com/PR0FESS0R-99/DonLee_Robot">𝐂𝐥𝐢𝐜𝐤 𝐌𝐞</a></b>
 """
