@@ -1,8 +1,7 @@
 import os
 class Translation(object):
   
-    await cmd.reply_photo(
-            Photo="https://telegra.ph/file/9cfaa62bbe28f0a436b3f.jpg"), caption=START_TEXT = """<b>𝐇𝐞𝐥𝐥𝐨👋 {}!!</b>
+    START_TEXT = """<b>𝐇𝐞𝐥𝐥𝐨👋 {}!!</b>
 
 <b>𝐈 𝐚𝐦 𝐀𝐫𝐢𝐬𝐮 𝐚 𝐏𝐫𝐨 𝐀𝐮𝐭𝐨 𝐅𝐢𝐥𝐭𝐞𝐫 𝐁𝐨𝐭</b>
 
