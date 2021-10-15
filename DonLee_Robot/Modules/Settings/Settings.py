@@ -33,7 +33,7 @@ async def settings(bot, update):
     bot_first_name= bot_info.first_name
     
     text =f"<u>{bot_first_name}'s</u> Settings Pannel.....\n"
-    text+=f"\n<i>You Can Use This Menu To Change Connectivity And Know Status Of Your Every Connected Channel, Change Filter Types, Configure Filter Results And To Know Status Of Your Group...</i>"
+    text+=f"\n<i>𝐘𝐨𝐮 𝐂𝐚𝐧 𝐔𝐬𝐞 𝐓𝐡𝐢𝐬 𝐌𝐞𝐧𝐮 𝐓𝐨 𝐂𝐡𝐚𝐧𝐠𝐞 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐢𝐯𝐢𝐭𝐲 𝐀𝐧𝐝 𝐊𝐧𝐨𝐰 𝐒𝐭𝐚𝐭𝐮𝐬 𝐎𝐟 𝐘𝐨𝐮𝐫 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 𝐂𝐡𝐚𝐧𝐧𝐞𝐥𝐬, 𝐂𝐡𝐚𝐧𝐠𝐞 𝐅𝐢𝐥𝐭𝐞𝐫 𝐓𝐲𝐩𝐞𝐬, 𝐂𝐨𝐧𝐟𝐢𝐠𝐮𝐫𝐞 𝐑𝐞𝐬𝐮𝐥𝐭𝐬 𝐀𝐧𝐝 𝐓𝐨 𝐊𝐧𝐨𝐰 𝐒𝐭𝐚𝐭𝐮𝐬 𝐎𝐟 𝐘𝐨𝐮𝐫 𝐆𝐫𝐨𝐮𝐩...</i>"
     
     buttons = [[
         InlineKeyboardButton("Channels", callback_data=f"channel_list({chat_id})"), 
