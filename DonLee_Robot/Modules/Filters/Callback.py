@@ -23,7 +23,7 @@ db = Database()
 @DonLee_Robot.on_callback_query(filters.regex(r"navigate\((.+)\)"), group=2)
 async def cb_navg(bot, update: CallbackQuery):
     """
-    A Callback Funtion For The Next Button Appearing In Results
+    𝐀 𝐂𝐚𝐥𝐥𝐛𝐚𝐜𝐤 𝐅𝐮𝐧𝐜𝐭𝐢𝐨𝐧 𝐅𝐨𝐫 𝐓𝐡𝐞 𝐍𝐞𝐱𝐭 𝐀𝐩𝐩𝐞𝐚𝐫𝐢𝐧𝐠 𝐑𝐞𝐬𝐮𝐥𝐭𝐬
     """
     global VERIFY
     query_data = update.data
@@ -50,7 +50,7 @@ async def cb_navg(bot, update: CallbackQuery):
         VERIFY[str(chat_id)] = admin_list
     
     if not ((user_id == ruser_id) or (user_id in admin_list)): # Checks if user is same as requested user or is admin
-        await update.answer("Ask for your own movie 🤗",show_alert=True)
+        await update.answer("𝐀𝐬𝐤 𝐘𝐨𝐮𝐫 𝐎𝐰𝐧 𝐌𝐨𝐯𝐢𝐞 🙂",show_alert=True)
         return
 
 
@@ -190,7 +190,7 @@ async def cb_navg(bot, update: CallbackQuery):
 @DonLee_Robot.on_callback_query(filters.regex(r"settings"), group=2)
 async def cb_settings(bot, update: CallbackQuery):
     """
-    A Callback Funtion For Back Button in /settings Command
+    𝐀 𝐂𝐚𝐥𝐥𝐛𝐚𝐜𝐤 𝐅𝐨𝐫 𝐁𝐚𝐜𝐤 𝐁𝐮𝐭𝐭𝐨𝐧 𝐢𝐧 /settings 𝐂𝐨𝐦𝐦𝐚𝐧𝐝
     """
     global VERIFY
     chat_id = update.message.chat.id
@@ -203,41 +203,41 @@ async def cb_settings(bot, update: CallbackQuery):
     bot_fname= bot_status.first_name
     
     text =f"<i>{bot_fname}'s</i> Settings Pannel.....\n"
-    text+=f"\n<i>You Can Use This Menu To Change Connectivity And Know Status Of Your Every Connected Channel, Change Filter Types, Configure Filter Results And To Know Status Of Your Group...</i>"
+    text+=f"\n<i>𝐘𝐨𝐮 𝐂𝐚𝐧 𝐔𝐬𝐞 𝐓𝐡𝐢𝐬 𝐌𝐞𝐧𝐮 𝐓𝐨 𝐂𝐡𝐚𝐧𝐠𝐞 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐢𝐯𝐢𝐭𝐲 𝐀𝐧𝐝 𝐓𝐨 𝐊𝐧𝐨𝐰 𝐘𝐨𝐮𝐫 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 𝐂𝐡𝐚𝐧𝐧𝐞𝐥𝐬, 𝐂𝐡𝐚𝐧𝐠𝐞 𝐅𝐢𝐥𝐭𝐞𝐫 𝐓𝐲𝐩𝐞𝐬, 𝐂𝐨𝐧𝐟𝐢𝐠𝐮𝐫𝐞 𝐅𝐢𝐥𝐭𝐞𝐫 𝐑𝐞𝐬𝐮𝐥𝐭𝐬 𝐀𝐧𝐝 𝐓𝐨 𝐊𝐧𝐨𝐰 𝐒𝐭𝐚𝐭𝐮𝐬 𝐎𝐟 𝐘𝐨𝐮𝐫 𝐆𝐫𝐨𝐮𝐩...</i>"
     
     buttons = [
         [
             InlineKeyboardButton
                 (
-                    "Channels", callback_data=f"channel_list({chat_id})"
+                    "𝐂𝐡𝐚𝐧𝐧𝐞𝐥𝐬", callback_data=f"channel_list({chat_id})"
                 ), 
             
             InlineKeyboardButton
                 (
-                    "Filter Types", callback_data=f"types({chat_id})"
+                    "𝐅𝐢𝐥𝐭𝐞𝐫 𝐓𝐲𝐩𝐞𝐬", callback_data=f"types({chat_id})"
                 )
         ],
         [
             InlineKeyboardButton
                 (
-                    "Configure 🛠", callback_data=f"config({chat_id})"
+                    "𝐂𝐨𝐧𝐟𝐢𝐠𝐮𝐫𝐞", callback_data=f"config({chat_id})"
                 )
         ], 
         [
             InlineKeyboardButton
                 (
-                    "Status", callback_data=f"status({chat_id})"
+                    "𝐒𝐭𝐚𝐭𝐮𝐬", callback_data=f"status({chat_id})"
                 ),
             
             InlineKeyboardButton
                 (
-                    "About", callback_data=f"about({chat_id})"
+                    "𝐀𝐛𝐨𝐮𝐭", callback_data=f"about({chat_id})"
                 )
         ],
         [
             InlineKeyboardButton
                 (
-                    "Close 🔐", callback_data="close"
+                    "𝐂𝐥𝐨𝐬𝐞", callback_data="close"
                 )
         ]
     ]
@@ -255,7 +255,7 @@ async def cb_settings(bot, update: CallbackQuery):
 @DonLee_Robot.on_callback_query(filters.regex(r"warn\((.+)\)"), group=2)
 async def cb_warn(bot, update: CallbackQuery):
     """
-    A Callback Funtion For Acknowledging User's About What Are They Upto
+    𝐀 𝐂𝐚𝐥𝐥𝐛𝐚𝐜𝐤 𝐅𝐮𝐧𝐜𝐭𝐢𝐨𝐧 𝐅𝐨𝐫 𝐀𝐜𝐤𝐧𝐨𝐰𝐥𝐞𝐝𝐠𝐢𝐧𝐠 𝐔𝐬𝐞𝐫 𝐀𝐛𝐨𝐮𝐭 𝐖𝐡𝐚𝐭 𝐀𝐫𝐞 𝐓𝐡𝐞𝐲 𝐔𝐩𝐭𝐨
     """
     global VERIFY
     query_data = update.data
@@ -270,34 +270,34 @@ async def cb_warn(bot, update: CallbackQuery):
     channel_id, channel_name, action = re.findall(r"warn\((.+)\)", query_data)[0].split("|", 2)
     
     if action == "connect":
-        text=f"<i>Are You Sure You Want To Enable Connection With</i> <code>{channel_name}</code><i>..???</i>\n"
-        text+=f"\n<i>This Will Show File Links From</i> <code>{channel_name}</code> <i>While Showing Results</i>..."
+        text=f"<i>𝐀𝐫𝐞 𝐘𝐨𝐮 𝐒𝐮𝐫𝐞 𝐖𝐚𝐧𝐭 𝐓𝐨 𝐄𝐧𝐚𝐛𝐥𝐞 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐢𝐨𝐧 𝐖𝐢𝐭𝐡</i> <code>{channel_name}</code><i>..???</i>\n"
+        text+=f"\n<i>𝐓𝐡𝐢𝐬 𝐖𝐢𝐥𝐥 𝐒𝐡𝐨𝐰 𝐋𝐢𝐧𝐤𝐬 𝐅𝐫𝐨𝐦 𝐓𝐡𝐞 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</i> <code>{channel_name}</code> <i>𝐖𝐡𝐢𝐥𝐞 𝐒𝐡𝐨𝐰𝐢𝐧𝐠 𝐑𝐞𝐬𝐮𝐥𝐭𝐬</i>..."
     
     elif action == "disconnect":
-        text=f"<i>Are You Sure You Want To Disable</i> <code>{channel_name}</code> <i>Connection With The Group???....</i>\n"
-        text+=f"\n<i>The DB Files Will Still Be There And You Can Connect Back To This Channel Anytime From Settings Menu Without Adding Files To DB Again...</i>\n"
-        text+=f"\n<i>This Disabling Just Hide Results From The Filter Results...</i>"
+        text=f"<i>𝐀𝐫𝐞 𝐘𝐨𝐮 𝐒𝐮𝐫𝐞 𝐖𝐚𝐧𝐭 𝐓𝐨 𝐃𝐢𝐬𝐚𝐛𝐥𝐞 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐢𝐨𝐧 𝐖𝐢𝐭𝐡</i> <code>{channel_name}</code> <i>𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐢𝐨𝐧 𝐖𝐢𝐭𝐛 𝐓𝐡𝐞 𝐆𝐫𝐨𝐮𝐩???....</i>\n"
+        text+=f"\n<i>𝐓𝐡𝐞 𝐃𝐁 𝐅𝐢𝐥𝐞𝐬 𝐖𝐢𝐥𝐥 𝐒𝐭𝐢𝐥𝐥 𝐁𝐞 𝐓𝐡𝐞𝐫𝐞 𝐀𝐧𝐝 𝐘𝐨𝐮 𝐂𝐚𝐧 𝐂𝐨𝐧𝐧𝐞𝐜𝐭 𝐁𝐚𝐜𝐤 𝐓𝐡𝐞 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 𝐀𝐧𝐲𝐭𝐢𝐦𝐞 𝐅𝐫𝐨𝐦 𝐓𝐡𝐞 𝐒𝐞𝐥𝐞𝐜𝐭𝐞𝐝 𝐌𝐞𝐧𝐮 𝐖𝐢𝐭𝐡𝐨𝐮𝐭 𝐀𝐝𝐝𝐢𝐧𝐠 𝐅𝐢𝐥𝐞𝐬 𝐓𝐨 𝐃𝐁 𝐀𝐠𝐚𝐢𝐧...</i>\n"
+        text+=f"\n<i>𝐓𝐡𝐢𝐬 𝐃𝐢𝐬𝐚𝐛𝐥𝐢𝐧𝐠 𝐖𝐢𝐥𝐥 𝐉𝐮𝐬𝐭 𝐇𝐢𝐝𝐞 𝐅𝐫𝐨𝐦 𝐓𝐡𝐞 𝐅𝐢𝐥𝐭𝐞𝐫 𝐑𝐞𝐬𝐮𝐥𝐭𝐬...</i>"
     
     elif action == "c_delete":
-        text=f"<i>Are You Sure You Want To Disconnect</i> <code>{channel_name}</code> <i>From This Group??</i>\n"
-        text+=f"\n<i><b>This Will Delete Channel And All Its Files From DB Too....!!</b></i>\n"
-        text+=f"\nYou Need To Add Channel Again If You Need To Shows It Result..."
+        text=f"<i>𝐀𝐫𝐞 𝐘𝐨𝐮 𝐒𝐮𝐫𝐞 𝐖𝐚𝐧𝐭 𝐓𝐨 𝐃𝐢𝐬𝐜𝐨𝐧𝐧𝐞𝐜𝐭</i> <code>{channel_name}</code> <i>𝐅𝐫𝐨𝐦 𝐓𝐡𝐢𝐬 𝐆𝐫𝐨𝐮𝐩??</i>\n"
+        text+=f"\n<i><b>𝐓𝐡𝐢𝐬 𝐖𝐢𝐥𝐥 𝐃𝐞𝐥𝐞𝐭𝐞 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 𝐀𝐧𝐝 𝐀𝐥𝐥 𝐅𝐢𝐥𝐞𝐬 𝐅𝐫𝐨𝐦 𝐓𝐡𝐞 𝐃𝐁 𝐓𝐨𝐨....!!</b></i>\n"
+        text+=f"\n𝐘𝐨𝐮 𝐍𝐞𝐞𝐝 𝐓𝐨 𝐀𝐝𝐝 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 𝐀𝐠𝐚𝐢𝐧 𝐓𝐨 𝐒𝐡𝐨𝐰 𝐑𝐞𝐬𝐮𝐥𝐭𝐬..."
         
     
     elif action=="f_delete":
-        text=f"<i>Are You Sure That You Want To Clear All Filter From This Chat</i> <code>{channel_name}</code><i>???</i>\n"
-        text+=f"\n<i>This Will Erase All Files From DB..</i>"
+        text=f"<i>𝐀𝐫𝐞 𝐘𝐨𝐮 𝐒𝐮𝐫𝐞 𝐖𝐚𝐧𝐭 𝐓𝐨 𝐃𝐞𝐥𝐞𝐭𝐞 𝐀𝐥𝐥 𝐅𝐢𝐥𝐭𝐞𝐫𝐬 𝐅𝐫𝐨𝐦 𝐓𝐡𝐢𝐬 𝐂𝐡𝐚𝐭</i> <code>{channel_name}</code><i>???</i>\n"
+        text+=f"\n<i>𝐓𝐡𝐢𝐬 𝐖𝐢𝐥𝐥 𝐄𝐫𝐚𝐬𝐞 𝐀𝐥𝐥 𝐅𝐢𝐥𝐞𝐬 𝐅𝐫𝐨𝐦 𝐓𝐡𝐞 𝐃𝐁..</i>"
         
     buttons = [
         [
             InlineKeyboardButton
                 (
-                    "Yes", callback_data=f"{action}({channel_id}|{channel_name})"
+                    "𝐘𝐮𝐩", callback_data=f"{action}({channel_id}|{channel_name})"
                 ), 
             
             InlineKeyboardButton
                 (
-                    "No", callback_data="close"
+                    "𝐍𝐨𝐩", callback_data="close"
                 )
         ]
     ]
