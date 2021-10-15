@@ -24,7 +24,7 @@ class Translation(object):
   
 ☞ <code>/del chat_id</code> - <b>𝐓𝐨 𝐃𝐢𝐬𝐜𝐨𝐧𝐧𝐞𝐜𝐭 𝐚 𝐆𝐫𝐨𝐮𝐩 𝐖𝐢𝐭𝐡 𝐚 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</b>
      
-☞ <code>/delall</code>  - <b>This Command Will Disconnect All Connected Channel With The Group And Deletes All Its File From DB</b>
+☞ <code>/delall</code>  - <b>𝐓𝐡𝐢𝐬 𝐂𝐨𝐦𝐦𝐚𝐧𝐝 𝐖𝐢𝐥𝐥 𝐃𝐢𝐬𝐜𝐨𝐧𝐧𝐞𝐜𝐭 𝐀𝐥𝐥 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 𝐖𝐢𝐭𝐡 𝐆𝐫𝐨𝐮𝐩 𝐀𝐧𝐝 𝐃𝐞𝐥𝐞𝐭𝐞 𝐀𝐥𝐥 𝐅𝐢𝐥𝐞𝐬 𝐅𝐫𝐨𝐦 𝐈𝐭𝐬 𝐃𝐁</b>
     
 ☞ <code>/settings</code> -  <b>This Command Will Display You A Settings Pannel Instance Which Can Be Used To Tweek Bot's Settings Accordingly</b>
 
