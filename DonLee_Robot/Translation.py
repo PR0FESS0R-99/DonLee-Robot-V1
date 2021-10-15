@@ -1,28 +1,28 @@
 import os
 class Translation(object):
   
-    START_TEXT = """<b>🙋‍♂️Hey {}!!</b>
+    START_TEXT = """<b>𝐇𝐞𝐥𝐥𝐨👋 {}!!</b>
 
-<b>Am Just A Pro Auto Filter Bot....😉</b>
+<b>𝐈 𝐚𝐦 𝐀𝐫𝐢𝐬𝐮 𝐚 𝐏𝐫𝐨 𝐀𝐮𝐭𝐨 𝐅𝐢𝐥𝐭𝐞𝐫 𝐁𝐨𝐭</b>
 
-<b>Just Add Me To Your Group And Channel And Connect Them And See My Pevers 🔥🔥😝</b>
+<b>𝐘𝐨𝐮 𝐜𝐚𝐧𝐧𝐨𝐭 𝐚𝐝𝐝 𝐦𝐞 𝐭𝐨 𝐲𝐨𝐮𝐫 𝐆𝐫𝐨𝐮𝐩 𝐢𝐟 𝐲𝐨𝐮 𝐜𝐚𝐧'𝐭 𝐛𝐞𝐥𝐢𝐞𝐯𝐞 𝐆𝐢𝐯𝐞 𝐢𝐭 𝐚 𝐭𝐫𝐲...😉</b>
 
+<𝐛>𝐈𝐟 𝐲𝐨𝐮 𝐧𝐞𝐞𝐝 𝐭𝐨 𝐭𝐫𝐲 𝐦𝐞 𝐣𝐨𝐢𝐧 𝐦𝐲 𝐆𝐫𝐨𝐮𝐩 (𝐣𝐨𝐢𝐧 𝐠𝐫𝐨𝐮𝐩 𝐜𝐥𝐢𝐜𝐤𝐢𝐧𝐠 𝐨𝐧 𝐭𝐡𝐞 𝐛𝐮𝐭𝐭𝐨𝐧 𝐲𝐨𝐮 𝐜𝐚𝐧 𝐬𝐞𝐞 𝐚𝐭 𝐭𝐡𝐞 𝐛𝐨𝐭𝐭𝐨𝐦 𝐨𝐟 𝐭𝐡𝐢𝐬 𝐦𝐞𝐬𝐬𝐚𝐠𝐞...🙂)<𝐛>
 
+<b>𝐏𝐫𝐞𝐬𝐬 /help 𝐓𝐨 𝐓𝐞𝐬𝐭 𝐌𝐲 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬😃</b>
 
-<b>Press /help to know about available commands🤪</b>
-
-<b>Maintained By @joel_boban</b>"""    
+<b>𝐌𝐚𝐢𝐧𝐭𝐚𝐢𝐧𝐞𝐝 𝐁𝐲 @joel_boban</b>"""    
     
     HELP_TEXT = """
-<b><u>Notice</u></b>
-<code>Imdb Poster Imdb is available on this bot
-Rating Not Available</codd> 
+<b><u>𝐍𝐨𝐭𝐢𝐜𝐞</u></b>
+<code>𝐈𝐦𝐝𝐛 𝐏𝐨𝐬𝐭𝐞𝐫 𝐀𝐯𝐚𝐢𝐥𝐚𝐛𝐥𝐞 𝐈𝐧 𝐓𝐡𝐢𝐬 𝐁𝐨𝐭
+𝐑𝐚𝐭𝐢𝐧𝐠 𝐍𝐨𝐭 𝐀𝐯𝐚𝐢𝐥𝐚𝐛𝐥𝐞 𝐈𝐧 𝐓𝐡𝐢𝐬 𝐁𝐨𝐭</codd> 
 
-<b><u>Bot Commands (Works Only In Groups)</u></b>
+<b><u>𝐁𝐨𝐭 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬 (𝐖𝐨𝐫𝐤𝐬 𝐎𝐧𝐥𝐲 𝐢𝐧 𝐆𝐫𝐨𝐮𝐩)</u></b>
 
-☞ <code>/add chat_id</code> - <b>To Connect A Group With A Channel (Bot Should Be Admin With Full Previlages In Both Group And Channel)</b>
+☞ <code>/add chat_id</code> - <b>𝐓𝐨 𝐂𝐨𝐧𝐧𝐞𝐜𝐭 𝐚 𝐆𝐫𝐨𝐮𝐩 𝐖𝐢𝐭𝐡 𝐚 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 (𝐁𝐨𝐭 𝐒𝐡𝐨𝐮𝐥𝐝 𝐁𝐞 𝐀𝐝𝐦𝐢𝐧 𝐀𝐭 𝐁𝐨𝐭𝐡 𝐆𝐫𝐨𝐮𝐩 𝐀𝐧𝐝 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 𝐖𝐢𝐭𝐡 𝐅𝐮𝐥𝐥 𝐏𝐫𝐢𝐯𝐢𝐥𝐞𝐠𝐞𝐬)</b>
   
-☞ <code>/del chat_id</code> - <b>To disconnect A Group With A Channel</b>
+☞ <code>/del chat_id</code> - <b>𝐓𝐨 𝐃𝐢𝐬𝐜𝐨𝐧𝐧𝐞𝐜𝐭 𝐚 𝐆𝐫𝐨𝐮𝐩 𝐖𝐢𝐭𝐡 𝐚 𝐂𝐡𝐚𝐧𝐧𝐞𝐥</b>
      
 ☞ <code>/delall</code>  - <b>This Command Will Disconnect All Connected Channel With The Group And Deletes All Its File From DB</b>
     
