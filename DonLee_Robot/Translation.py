@@ -15,6 +15,7 @@ class Translation(object):
     
     HELP_TEXT = """
 <u>𝐍𝐨𝐭𝐢𝐜𝐞</u>
+
 <code>𝐈𝐦𝐝𝐛 𝐏𝐨𝐬𝐭𝐞𝐫 𝐀𝐯𝐚𝐢𝐥𝐚𝐛𝐥𝐞 𝐈𝐧 𝐓𝐡𝐢𝐬 𝐁𝐨𝐭
 𝐑𝐚𝐭𝐢𝐧𝐠 𝐍𝐨𝐭 𝐀𝐯𝐚𝐢𝐥𝐚𝐛𝐥𝐞 𝐈𝐧 𝐓𝐡𝐢𝐬 𝐁𝐨𝐭</codd> 
 
@@ -51,5 +52,5 @@ class Translation(object):
 
 ★ 𝐋𝐢𝐛𝐫𝐚𝐫𝐲 : 𝐏𝐲𝐫𝐨𝐠𝐫𝐚𝐦 𝐀𝐜𝐲𝐧𝐜𝐢𝐨 1.13.0
 
-★ 𝐒𝐨𝐮𝐫𝐜𝐞 𝐂𝐨𝐝𝐞 : <a href="https://github.com/PR0FESS0R-99/DonLee_Robot">𝐂𝐥𝐢𝐜𝐤 𝐌𝐞</a>
+★ 𝐒𝐨𝐮𝐫𝐜𝐞 𝐂𝐨𝐝𝐞 :  href="https://t.me/nokkiirunnoippokittum">𝐂𝐥𝐢𝐜𝐤 𝐌𝐞
 """
