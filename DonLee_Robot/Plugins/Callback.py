@@ -32,27 +32,27 @@ async def cb_navg(bot, update: CallbackQuery):
     query_data = update.data
     chat_id = update.message.chat.id
     user_id = update.from_user.id
-    
+
     index_val, btn, query = re.findall(r"navigate\((.+)\)", query_data)[0].split("|", 2)
     try:
         ruser_id = update.message.reply_to_message.from_user.id
     except Exception as e:
         print(e)
         ruser_id = None
-    
+
     admin_list = VERIFY.get(str(chat_id))
-    if admin_list == None: # Make Admin's ID List
-        
+    if admin_list is None: # Make Admin's ID List
+
         admin_list = []
-        
+
         async for x in bot.iter_chat_members(chat_id=chat_id, filter="administrators"):
             admin_id = x.user.id 
             admin_list.append(admin_id)
-            
+
         admin_list.append(None) # Just For Anonymous Admin....
         VERIFY[str(chat_id)] = admin_list
-    
-    if not ((user_id == ruser_id) or (user_id in admin_list)): # Checks if user is same as requested user or is admin
+
+    if user_id != ruser_id and user_id not in admin_list: # Checks if user is same as requested user or is admin
         await update.answer("Nice Try ;)",show_alert=True)
         return
 
@@ -61,17 +61,17 @@ async def cb_navg(bot, update: CallbackQuery):
         index_val = int(index_val) + 1
     elif btn == "back":
         index_val = int(index_val) - 1
-    
+
     achats = ACTIVE_CHATS[str(chat_id)]
     configs = await db.find_chat(chat_id)
     pm_file_chat = configs["configs"]["pm_fchat"]
     show_invite = configs["configs"]["show_invite_link"]
     show_invite = (False if pm_file_chat == True else show_invite)
-    
+
     results = FIND.get(query).get("results")
     leng = FIND.get(query).get("total_len")
     max_pages = FIND.get(query).get("max_pages")
-    
+
     try:
         temp_results = results[index_val].copy()
     except IndexError:
@@ -80,44 +80,47 @@ async def cb_navg(bot, update: CallbackQuery):
         print(e)
         return
 
-    if ((index_val + 1 )== max_pages) or ((index_val + 1) == len(results)): # Max Pages
+    if index_val + 1 in [max_pages, len(results)]: # Max Pages
         temp_results.append([
             InlineKeyboardButton("⏪ Back", callback_data=f"navigate({index_val}|back|{query})")
         ])
 
-    elif int(index_val) == 0:
-        pass
-
-    else:
+    elif int(index_val) != 0:
         temp_results.append([
             InlineKeyboardButton("⏪ Back", callback_data=f"navigate({index_val}|back|{query})"),
             InlineKeyboardButton("Next ⏩", callback_data=f"navigate({index_val}|next|{query})")
         ])
 
-    if not int(index_val) == 0:    
-        temp_results.append([
-            InlineKeyboardButton(f"🔰 Page {index_val + 1}/{len(results) if len(results) < max_pages else max_pages} 🔰", callback_data="ignore")
-        ])
-    
+    if int(index_val) != 0:
+        temp_results.append(
+            [
+                InlineKeyboardButton(
+                    f'🔰 Page {index_val + 1}/{min(len(results), max_pages)} 🔰',
+                    callback_data="ignore",
+                )
+            ]
+        )
+
+
     if show_invite and int(index_val) !=0 :
-        
+
         ibuttons = []
         achatId = []
         await gen_invite_links(configs, chat_id, bot, update)
-        
+
         for x in achats["chats"] if isinstance(achats, dict) else achats:
             achatId.append(int(x["chat_id"])) if isinstance(x, dict) else achatId.append(x)
-        
+
         for y in INVITE_LINK.get(str(chat_id)):
-            
+
             chat_id = int(y["chat_id"])
-            
+
             if chat_id not in achatId:
                 continue
-            
+
             chat_name = y["chat_name"]
             invite_link = y["invite_link"]
-            
+
             if ((len(ibuttons)%2) == 0):
                 ibuttons.append(
                     [
@@ -135,23 +138,23 @@ async def cb_navg(bot, update: CallbackQuery):
                             f"⚜ {chat_name} ⚜", url=invite_link
                         )
                 )
-            
+
         for x in ibuttons:
             temp_results.insert(0, x)
         ibuttons = None
         achatId = None
-    
+
     reply_markup = InlineKeyboardMarkup(temp_results)
-    
+
     text=f"<i>Found</i> <code>{leng}</code> <i>Results For Your Query:</i> <code>{query}</code>"
-        
+
     try:
         await update.message.edit(
                 text,
                 reply_markup=reply_markup,
                 parse_mode="html"
         )
-        
+
     except FloodWait as f: # Flood Wait Caused By Spamming Next/Back Buttons
         await asyncio.sleep(f.x)
         await update.message.edit(
@@ -170,23 +173,24 @@ async def cb_settings(bot, update: CallbackQuery):
     global VERIFY
     chat_id = update.message.chat.id
     user_id = update.from_user.id
-    
+
     if user_id not in VERIFY.get(str(chat_id)): # Check If User Is Admin
         return
 
     bot_status = await bot.get_me()
     bot_fname= bot_status.first_name
-    
+
     text =f"<i>{bot_fname}'s</i> Settings Pannel.....\n"
-    text+=f"\n<i>You Can Use This Menu To Change Connectivity And Know Status Of Your Every Connected Channel, Change Filter Types, Configure Filter Results And To Know Status Of Your Group...</i>"
-    
+    text += '\n<i>You Can Use This Menu To Change Connectivity And Know Status Of Your Every Connected Channel, Change Filter Types, Configure Filter Results And To Know Status Of Your Group...</i>'
+
+
     buttons = [
         [
             InlineKeyboardButton
                 (
                     "Channels", callback_data=f"channel_list({chat_id})"
                 ), 
-            
+
             InlineKeyboardButton
                 (
                     "Filter Types", callback_data=f"types({chat_id})"
@@ -203,7 +207,7 @@ async def cb_settings(bot, update: CallbackQuery):
                 (
                     "Status", callback_data=f"status({chat_id})"
                 ),
-            
+
             InlineKeyboardButton
                 (
                     "About", callback_data=f"about({chat_id})"
@@ -238,47 +242,49 @@ async def cb_warn(bot, update: CallbackQuery):
     chat_name = remove_emoji(update.message.chat.title)
     chat_name = chat_name.encode('ascii', 'ignore').decode('ascii')[:35]
     user_id = update.from_user.id
-    
+
     if user_id not in VERIFY.get(str(chat_id)):
         return
-    
+
     channel_id, channel_name, action = re.findall(r"warn\((.+)\)", query_data)[0].split("|", 2)
-    
-    if action == "connect":
+
+    if action == "c_delete":
+        text=f"<i>Are You Sure You Want To Disconnect</i> <code>{channel_name}</code> <i>From This Group??</i>\n"
+        text += '\n<i><b>This Will Delete Channel And All Its Files From DB Too....!!</b></i>\n'
+
+        text += '\nYou Need To Add Channel Again If You Need To Shows It Result...'
+                
+
+    elif action == "connect":
         text=f"<i>Are You Sure You Want To Enable Connection With</i> <code>{channel_name}</code><i>..???</i>\n"
         text+=f"\n<i>This Will Show File Links From</i> <code>{channel_name}</code> <i>While Showing Results</i>..."
-    
+
     elif action == "disconnect":
         text=f"<i>Are You Sure You Want To Disable</i> <code>{channel_name}</code> <i>Connection With The Group???....</i>\n"
-        text+=f"\n<i>The DB Files Will Still Be There And You Can Connect Back To This Channel Anytime From Settings Menu Without Adding Files To DB Again...</i>\n"
-        text+=f"\n<i>This Disabling Just Hide Results From The Filter Results...</i>"
-    
-    elif action == "c_delete":
-        text=f"<i>Are You Sure You Want To Disconnect</i> <code>{channel_name}</code> <i>From This Group??</i>\n"
-        text+=f"\n<i><b>This Will Delete Channel And All Its Files From DB Too....!!</b></i>\n"
-        text+=f"\nYou Need To Add Channel Again If You Need To Shows It Result..."
-        
-    
-    elif action=="f_delete":
+        text += '\n<i>The DB Files Will Still Be There And You Can Connect Back To This Channel Anytime From Settings Menu Without Adding Files To DB Again...</i>\n'
+
+        text += '\n<i>This Disabling Just Hide Results From The Filter Results...</i>'
+
+    elif action == "f_delete":
         text=f"<i>Are You Sure That You Want To Clear All Filter From This Chat</i> <code>{channel_name}</code><i>???</i>\n"
-        text+=f"\n<i>This Will Erase All Files From DB..</i>"
-        
+        text += '\n<i>This Will Erase All Files From DB..</i>'
+
     buttons = [
         [
             InlineKeyboardButton
                 (
                     "Yes", callback_data=f"{action}({channel_id}|{channel_name})"
                 ), 
-            
+
             InlineKeyboardButton
                 (
                     "No", callback_data="close"
                 )
         ]
     ]
-    
+
     reply_markup = InlineKeyboardMarkup(buttons)
-    
+
     await update.message.edit_text(
         text,
         reply_markup=reply_markup,
@@ -288,7 +294,7 @@ async def cb_warn(bot, update: CallbackQuery):
 
 
 @DonLee_Robot.on_callback_query(filters.regex(r"channel_list\((.+)\)"), group=2)
-async def cb_channel_list(bot, update: CallbackQuery):    
+async def cb_channel_list(bot, update: CallbackQuery):
     """
     A Callback Funtion For Displaying All Channel List And Providing A Menu To Navigate
     To Every COnnect Chats For Furthur Control
@@ -299,66 +305,58 @@ async def cb_channel_list(bot, update: CallbackQuery):
     chat_name = remove_emoji(update.message.chat.title)
     chat_name = chat_name.encode('ascii', 'ignore').decode('ascii')[:35]
     user_id = update.from_user.id
-    
+
     if user_id not in VERIFY.get(str(chat_id)):
         return
-        
+
     chat_id =  re.findall(r"channel_list\((.+)\)", query_data)[0]
-    
+
     text = "<i>Semms Like You Dont Have Any Channel Connected...</i>\n\n<i>Connect To Any Chat To Continue With This Settings...</i>"
-    
+
     db_list = await db.find_chat(int(chat_id))
-    
+
     channel_id_list = []
     channel_name_list = []
-    
+
     if db_list:
         for x in db_list["chat_ids"]:
             channel_id = x["chat_id"]
             channel_name = x["chat_name"]
-            
+
             try:
-                if (channel_id == None or channel_name == None):
+                if channel_id is None or channel_name is None:
                     continue
             except:
                 break
-            
+
             channel_name = remove_emoji(channel_name).encode('ascii', 'ignore').decode('ascii')[:35]
             channel_id_list.append(channel_id)
             channel_name_list.append(channel_name)
-        
-    buttons = []
 
-    buttons.append(
-        [
-            InlineKeyboardButton
+    buttons = [[InlineKeyboardButton
                 (
                     "🔙 Back", callback_data="settings"
-                ),
-            
-            InlineKeyboardButton
+                ), InlineKeyboardButton
                 (
                     "Close 🔐", callback_data="close"
-                )
-        ]
-    ) 
+                )]]
 
     if channel_name_list:
-        
+
         text=f"<i>List Of Connected Channels With <code>{chat_name}</code> With There Settings..</i>\n"
-    
+
         for x in range(1, (len(channel_name_list)+1)):
             text+=f"\n<code>{x}. {channel_name_list[x-1]}</code>\n"
-    
+
         text += "\nChoose Appropriate Buttons To Navigate Through Respective Channels"
-    
-        
+
+
         btn_key = [
             "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟", 
             "1️⃣1️⃣", "1️⃣2️⃣", "1️⃣3️⃣", "1️⃣4️⃣", "1️⃣5️⃣", "1️⃣6️⃣", "1️⃣7️⃣", 
             "1️⃣8️⃣", "1️⃣9️⃣", "2️⃣0️⃣" # Just In Case 😂🤣
         ]
-    
+
         for i in range(1, (len(channel_name_list) + 1)): # Append The Index Number of Channel In Just A Single Line
             if i == 1:
                 buttons.insert(0,
@@ -369,7 +367,7 @@ async def cb_channel_list(bot, update: CallbackQuery):
                         )
                     ]
                 )
-        
+
             else:
                 buttons[0].append(
                     InlineKeyboardButton
@@ -377,9 +375,9 @@ async def cb_channel_list(bot, update: CallbackQuery):
                             btn_key[i-1], callback_data=f"info({channel_id_list[i-1]}|{channel_name_list[i-1]})"
                         )
                 )
-    
+
     reply_markup=InlineKeyboardMarkup(buttons)
-    
+
     await update.message.edit_text(
             text = text,
             reply_markup=reply_markup,
@@ -496,18 +494,18 @@ async def cb_connect(bot, update: CallbackQuery):
     query_data = update.data
     chat_id = update.message.chat.id
     user_id = update.from_user.id
-    
+
 
     if user_id not in VERIFY.get(str(chat_id)):
         return
 
     channel_id, channel_name = re.findall(r"connect\((.+)\)", query_data)[0].split("|", 1)
     channel_id = int(channel_id)
-    
+
     f_count = await db.cf_count(chat_id, channel_id)
-    
+
     add_active = await db.update_active(chat_id, channel_id, channel_name)
-    
+
     if not add_active:
         await update.answer(f"{channel_name} Is Aldready in Active Connection", show_alert=True)
         return
@@ -517,7 +515,7 @@ async def cb_connect(bot, update: CallbackQuery):
     text+=f"\n<i>Channel Name:</i> <code>{channel_name}</code>\n"
     text+=f"\n<i>Channel ID:</i> <code>{channel_id}</code>\n"
     text+=f"\n<i>Channel Files:</i> <code>{f_count}</code>\n"
-    text+=f"\n<i>Current Status:</i> <code>Connected</code>\n"
+    text += '\n<i>Current Status:</i> <code>Connected</code>\n'
 
     buttons = [
                 [
@@ -525,14 +523,14 @@ async def cb_connect(bot, update: CallbackQuery):
                         (
                             "🚨 Disconnect 🚨", callback_data=f"warn({channel_id}|{channel_name}|disconnect)"
                         ),
-                    
+
                     InlineKeyboardButton
                         (
                             "Delete ❌", callback_data=f"warn({channel_id}|{channel_name}|c_delete)"
                         )
                 ]
     ]
-    
+
     buttons.append(
             [
                 InlineKeyboardButton
@@ -541,7 +539,7 @@ async def cb_connect(bot, update: CallbackQuery):
                     )
             ]
     )
-    
+
     buttons.append(
             [
                 InlineKeyboardButton
@@ -551,9 +549,9 @@ async def cb_connect(bot, update: CallbackQuery):
             ]
     )
     await recacher(chat_id, False, True, bot, update)
-    
+
     reply_markup = InlineKeyboardMarkup(buttons)
-        
+
     await update.message.edit_text(
             text, reply_markup=reply_markup, parse_mode="html"
         )
@@ -570,41 +568,41 @@ async def cb_disconnect(bot, update: CallbackQuery):
     query_data = update.data
     chat_id = update.message.chat.id
     user_id = update.from_user.id
-    
+
     if user_id not in VERIFY.get(str(chat_id)):
         return
 
     channel_id, channel_name = re.findall(r"connect\((.+)\)", query_data)[0].split("|", 1)
-    
+
     f_count = await db.cf_count(chat_id, int(channel_id))
-    
+
     remove_active = await db.del_active(chat_id, int(channel_id))
-    
+
     if not remove_active:
         await update.answer("Couldnt Full Fill YOur Request...\n Report This @CrazyBotszGrp Along With Bot's Log", show_alert=True)
         return
-    
+
     text= f"<i>Sucessfully Disconnected From</i> <code>{channel_name}</code>\n"
     text+=f"\n<i>Info About <b>{channel_name}</b></i>\n"
     text+=f"\n<i>Channel Name:</i> <code>{channel_name}</code>\n"
     text+=f"\n<i>Channel ID:</i> <code>{channel_id}</code>\n"
     text+=f"\n<i>Channel Files:</i> <code>{f_count}</code>\n"
-    text+=f"\n<i>Current Status:</i> <code>Disconnected</code>\n"
-    
+    text += '\n<i>Current Status:</i> <code>Disconnected</code>\n'
+
     buttons = [ 
                 [
                     InlineKeyboardButton
                         (
                             "💠 Connect 💠", callback_data=f"warn({channel_id}|{channel_name}|connect)"
                         ),
-                    
+
                     InlineKeyboardButton
                         (
                             "Delete ❌", callback_data=f"warn({channel_id}|{channel_name}|c_delete)"
                         )
                 ]
     ]
-    
+
     buttons.append(
             [
                 InlineKeyboardButton
@@ -613,7 +611,7 @@ async def cb_disconnect(bot, update: CallbackQuery):
                     )
             ]
     )
-    
+
     buttons.append(
             [
                 InlineKeyboardButton
@@ -622,9 +620,9 @@ async def cb_disconnect(bot, update: CallbackQuery):
                     )
             ]
     )
-    
+
     reply_markup = InlineKeyboardMarkup(buttons)
-    
+
     await recacher(chat_id, False, True, bot, update)
 
     await update.message.edit_text(
@@ -643,13 +641,13 @@ async def cb_channel_delete(bot, update: CallbackQuery):
     query_data = update.data
     chat_id = update.message.chat.id
     user_id = update.from_user.id
-    
+
     if user_id not in VERIFY.get(str(chat_id)):
         return
 
     channel_id, channel_name = re.findall(r"c_delete\((.+)\)", query_data)[0].split("|", 1)
     channel_id = int(channel_id)
-    
+
     c_delete = await db.del_chat(chat_id, channel_id)
     a_delete = await db.del_active(chat_id, channel_id) # pylint: disable=unused-variable
     f_delete = await db.del_filters(chat_id, channel_id)
@@ -658,7 +656,8 @@ async def cb_channel_delete(bot, update: CallbackQuery):
         text=f"<code>{channel_name} [ {channel_id} ]</code> Has Been Sucessfully Deleted And All Its Files Were Cleared From DB...."
 
     else:
-        text=f"<i>Couldn't Delete Channel And All Its Files From DB Sucessfully....</i>\n<i>Please Try Again After Sometimes...Also Make Sure To Check The Logs..!!</i>"
+        text = "<i>Couldn't Delete Channel And All Its Files From DB Sucessfully....</i>\n<i>Please Try Again After Sometimes...Also Make Sure To Check The Logs..!!</i>"
+
         await update.answer(text=text, show_alert=True)
 
     buttons = [
@@ -667,7 +666,7 @@ async def cb_channel_delete(bot, update: CallbackQuery):
                 (
                     "🔙 Back", callback_data=f"channel_list({chat_id})"
                 ),
-                
+
             InlineKeyboardButton
                 (
                     "Close 🔐", callback_data="close"
@@ -676,7 +675,7 @@ async def cb_channel_delete(bot, update: CallbackQuery):
     ]
 
     await recacher(chat_id, True, True, bot, update)
-    
+
     reply_markup=InlineKeyboardMarkup(buttons)
 
     await update.message.edit_text(
@@ -741,28 +740,28 @@ async def cb_types(bot, update: CallbackQuery):
     chat_id = update.message.chat.id
     chat_name = remove_emoji(update.message.chat.title)
     user_id = update.from_user.id
-    
+
     if user_id not in VERIFY.get(str(chat_id)):
         return
 
     chat_id = re.findall(r"types\((.+)\)", query_data)[0]
-    
+
     _types = await db.find_chat(int(chat_id))
-    
+
     text=f"<i>Filter Types Enabled/Disbled In <code>{chat_name}</code></i>\n"
-    
+
     _types = _types["types"]
     vid = _types["video"]
     doc = _types["document"]
     aud = _types["audio"]
-    
+
     buttons = []
-    
+
     if vid:
         text+="\n<i><b>Video Index:</b> Enabled</i>\n"
         v_e = "✅"
         vcb_data = f"toggle({chat_id}|video|False)"
-    
+
     else:
         text+="\n<i><b>Video Index:</b> Disabled</i>\n"
         v_e="❎"
@@ -788,25 +787,18 @@ async def cb_types(bot, update: CallbackQuery):
         a_e="❎"
         acb_data = f"toggle({chat_id}|audio|True)"
 
-    
+
     text+="\n<i>Below Buttons Will Toggle Respective Media Types As Enabled Or Disabled....\n</i>"
     text+="<i>This Will Take Into Action As Soon As You Change Them....</i>"
-    
+
     buttons.append([InlineKeyboardButton(f"Video Index: {v_e}", callback_data=vcb_data)])
     buttons.append([InlineKeyboardButton(f"Audio Index: {a_e}", callback_data=acb_data)])
     buttons.append([InlineKeyboardButton(f"Document Index: {d_e}", callback_data=dcb_data)])
-    
-    buttons.append(
-        [
-            InlineKeyboardButton
-                (
-                    "🔙 Back", callback_data=f"settings"
-                )
-        ]
-    )
-    
+
+    buttons.append([InlineKeyboardButton("🔙 Back", callback_data='settings')])
+
     reply_markup = InlineKeyboardMarkup(buttons)
-    
+
     await update.message.edit_text(
         text,
         reply_markup=reply_markup, 
@@ -824,27 +816,27 @@ async def cb_toggle(bot, update: CallbackQuery):
     query_data = update.data
     chat_id = update.message.chat.id
     user_id = update.from_user.id
-    
+
     if user_id not in VERIFY.get(str(chat_id)):
         return
 
     chat_id, types, val = re.findall(r"toggle\((.+)\)", query_data)[0].split("|", 2)
-    
+
     _types = await db.find_chat(int(chat_id))
-    
+
     _types = _types["types"]
     vid = _types["video"]
     doc = _types["document"]
     aud = _types["audio"]
-    
-    if types == "video":
-        vid = True if val=="True" else False
-    elif types == "audio":
-        aud = True if val=="True" else False
+
+    if types == "audio":
+        aud = val=="True"
     elif types == "document":
-        doc = True if val=="True" else False
-    
-        
+        doc = val=="True"
+            
+
+    elif types == "video":
+        vid = val=="True"
     settings = {
         "video": vid,
         "audio": aud,
@@ -852,31 +844,31 @@ async def cb_toggle(bot, update: CallbackQuery):
     }
 
     process = await db.update_settings(chat_id, settings)
-    
+
     if process:
         await update.answer(text="Filter Types Updated Sucessfully", show_alert=True)
-    
+
     else:
         text="Something Wrong Please Check Bot Log For More Information...."
         await update.answer(text, show_alert=True)
         return
-    
+
     _types = await db.find_chat(int(chat_id))
-    
+
     text =f"<i>Filter Types Enabled In <code>{update.message.chat.title}</code></i>\n"
-    
+
     _types = _types["types"]
     vid = _types["video"]
     doc = _types["document"]
     aud = _types["audio"]
-    
+
     buttons = []
-    
+
     if vid:
         text+="\n<i><b>Video Index:</b> Enabled</i>\n"
         v_e = "✅"
         vcb_data = f"toggle({chat_id}|video|False)"
-    
+
     else:
         text+="\n<i><b>Video Index:</b> Disabled</i>\n"
         v_e="❎"
@@ -902,25 +894,18 @@ async def cb_toggle(bot, update: CallbackQuery):
         a_e="❎"
         acb_data = f"toggle({chat_id}|audio|True)"
 
-    
+
     text+="\n<i>Below Buttons Will Toggle Respective Media Types As Enabled Or Disabled....\n</i>"
     text+="<i>This Will Take Into Action As Soon As You Change Them....</i>"
-    
+
     buttons.append([InlineKeyboardButton(f"Video Index : {v_e}", callback_data=vcb_data)])
     buttons.append([InlineKeyboardButton(f"Audio Index : {a_e}", callback_data=acb_data)])
     buttons.append([InlineKeyboardButton(f"Document Index : {d_e}", callback_data=dcb_data)])
-    
-    buttons.append(
-        [
-            InlineKeyboardButton
-                (
-                    "🔙 Back", callback_data=f"settings"
-                )
-        ]
-    )
-    
+
+    buttons.append([InlineKeyboardButton("🔙 Back", callback_data='settings')])
+
     reply_markup = InlineKeyboardMarkup(buttons)
-    
+
     await update.message.edit_text(
         text,
         reply_markup=reply_markup, 
@@ -941,37 +926,37 @@ async def cb_config(bot, update: CallbackQuery):
     chat_id = update.message.chat.id
     chat_name = remove_emoji(update.message.chat.title)
     user_id = update.from_user.id
-    
+
     if user_id not in VERIFY.get(str(chat_id)):
         return
 
     chat_id = re.findall(r"config\((.+)\)", query_data)[0]
-    
+
     settings = await db.find_chat(int(chat_id))
-    
+
     mp_count = settings["configs"]["max_pages"]
     mf_count = settings["configs"]["max_results"]
     mr_count = settings["configs"]["max_per_page"]
     show_invite = settings["configs"]["show_invite_link"]
     pm_file_chat  = settings["configs"].get("pm_fchat", False)
     accuracy_point = settings["configs"].get("accuracy", 0.80)
-    
+
     text=f"<i><b>Configure Your <u><code>{chat_name}</code></u> Group's Filter Settings...</b></i>\n"
-    
+
     text+=f"\n<i>{chat_name}</i> Current Settings:\n"
 
     text+=f"\n - Max Filter: <code>{mf_count}</code>\n"
-    
+
     text+=f"\n - Max Pages: <code>{mp_count}</code>\n"
-    
+
     text+=f"\n - Max Filter Per Page: <code>{mr_count}</code>\n"
 
     text+=f"\n - Accuracy Percentage: <code>{accuracy_point}</code>\n"
-    
+
     text+=f"\n - Show Invitation Link: <code>{show_invite}</code>\n"
-    
+
     text+=f"\n - Provide File In Bot PM: <code>{pm_file_chat}</code>\n"
-    
+
     text+="\nAdjust Above Value Using Buttons Below... "
     buttons=[
         [
@@ -979,7 +964,7 @@ async def cb_config(bot, update: CallbackQuery):
                 (
                     "Filter Per Page", callback_data=f"mr_count({mr_count}|{chat_id})"
                 ), 
-    
+
             InlineKeyboardButton
                 (
                     "Max Pages",       callback_data=f"mp_count({mp_count}|{chat_id})"
@@ -1023,18 +1008,11 @@ async def cb_config(bot, update: CallbackQuery):
     )
 
 
-    buttons.append(
-        [
-            InlineKeyboardButton
-                (
-                    "🔙 Back", callback_data=f"settings"
-                )
-        ]
-    )
-    
-    
+    buttons.append([InlineKeyboardButton("🔙 Back", callback_data='settings')])
+        
+
     reply_markup=InlineKeyboardMarkup(buttons)
-    
+
     await update.message.edit_text(
         text, 
         reply_markup=reply_markup, 
@@ -1262,14 +1240,14 @@ async def cb_show_invites(bot, update: CallbackQuery):
     query_data = update.data
     chat_id = update.message.chat.id
     user_id = update.from_user.id
-    
+
     if user_id not in VERIFY.get(str(chat_id)):
         return
 
     value, chat_id = re.findall(r"show_invites\((.+)\)", query_data)[0].split("|", 1)
-    
-    value = True if value=="True" else False
-    
+
+    value = value=="True"
+
     if value:
         buttons= [
             [
@@ -1285,7 +1263,7 @@ async def cb_show_invites(bot, update: CallbackQuery):
                     )
             ]
         ]
-    
+
     else:
         buttons =[
             [
@@ -1301,11 +1279,12 @@ async def cb_show_invites(bot, update: CallbackQuery):
                     )
             ]
         ]
-    
-    text=f"<i>This Config Will Help You To Show Invitation Link Of All Active Chats Along With The Filter Results For The Users To Join.....</i>"
-    
+
+    text = '<i>This Config Will Help You To Show Invitation Link Of All Active Chats Along With The Filter Results For The Users To Join.....</i>'
+
+
     reply_markup=InlineKeyboardMarkup(buttons)
-    
+
     await update.message.edit_text(
         text,
         reply_markup=reply_markup,
@@ -1323,14 +1302,14 @@ async def cb_pm_file(bot, update: CallbackQuery):
     query_data = update.data
     chat_id = update.message.chat.id
     user_id = update.from_user.id
-    
+
     if user_id not in VERIFY.get(str(chat_id)):
         return
 
     value, chat_id = re.findall(r"inPM\((.+)\)", query_data)[0].split("|", 1)
 
-    value = True if value=="True" else False
-    
+    value = value=="True"
+
     if value:
         buttons= [
             [
@@ -1346,7 +1325,7 @@ async def cb_pm_file(bot, update: CallbackQuery):
                     )
             ]
         ]
-    
+
     else:
         buttons =[
             [
@@ -1362,11 +1341,12 @@ async def cb_pm_file(bot, update: CallbackQuery):
                     )
             ]
         ]
-    
-    text=f"<i>This Config Will Help You To Enable/Disable File Transfer Through Bot PM Without Redirecting Them To Channel....</i>"
-    
+
+    text = '<i>This Config Will Help You To Enable/Disable File Transfer Through Bot PM Without Redirecting Them To Channel....</i>'
+
+
     reply_markup=InlineKeyboardMarkup(buttons)
-    
+
     await update.message.edit_text(
         text,
         reply_markup=reply_markup,
@@ -1386,16 +1366,16 @@ async def cb_accuracy(bot, update: CallbackQuery):
     chat_name = update.message.chat.title
     user_id = update.from_user.id
     query_data = update.data
-    
-    
+
+
     if user_id not in VERIFY.get(str(chat_id)):
         return
 
     val, chat_id = re.findall(r"accuracy\((.+)\)", query_data)[0].split("|", 1)
-    
+
     text = f"<i>Choose Your Desired 'Accuracy Perceentage' For Every Filter Results Shown In</i> <code>{chat_name}</code>\n\n"
-    text+= f"<i>NB: Higher The Value Better Matching Results Will Be Provided... And If Value Is Lower It Will Show More Results \
-        Which Is Fimilary To Query Search (Wont Be Accurate)....</i>"
+    text += '<i>NB: Higher The Value Better Matching Results Will Be Provided... And If Value Is Lower It Will Show More Results \\\x1f        Which Is Fimilary To Query Search (Wont Be Accurate)....</i>'
+
 
     buttons = [
         [
@@ -1459,7 +1439,7 @@ async def cb_set(bot, update: CallbackQuery):
     query_data = update.data
     chat_id = update.message.chat.id
     user_id = update.from_user.id
-    
+
     if user_id not in VERIFY.get(str(chat_id)):
         return
 
@@ -1469,38 +1449,38 @@ async def cb_set(bot, update: CallbackQuery):
         val, chat_id, curr_val = float(val), int(chat_id), float(curr_val)
     except:
         chat_id = int(chat_id)
-    
+
     if val == curr_val:
         await update.answer("New Value Cannot Be Old Value...Please Choose Different Value...!!!", show_alert=True)
         return
-    
+
     prev = await db.find_chat(chat_id)
 
     accuracy = float(prev["configs"].get("accuracy", 0.80))
     max_pages = int(prev["configs"].get("max_pages"))
     max_results = int(prev["configs"].get("max_results"))
     max_per_page = int(prev["configs"].get("max_per_page"))
-    pm_file_chat = True if prev["configs"].get("pm_fchat") == (True or "True") else False
-    show_invite_link = True if prev["configs"].get("show_invite_link") == (True or "True") else False
-    
-    if action == "accuracy": # Scophisticated way 😂🤣
+    pm_file_chat = prev["configs"].get("pm_fchat") == (True or "True")
+    show_invite_link = prev["configs"].get("show_invite_link") == (True or "True")
+
+    if action == "accuracy":
         accuracy = val
-    
+
+    elif action == "inPM":
+        pm_file_chat = val=="True"
+                
+
     elif action == "pages":
         max_pages = int(val)
-        
-    elif action == "results":
-        max_results = int(val)
-        
+
     elif action == "per_page":
         max_per_page = int(val)
 
-    elif action =="showInv":
-        show_invite_link = True if val=="True" else False
+    elif action == "results":
+        max_results = int(val)
 
-    elif action == "inPM":
-        pm_file_chat = True if val=="True" else False
-        
+    elif action == "showInv":
+        show_invite_link = val=="True"
 
     new = dict(
         accuracy=accuracy,
@@ -1510,32 +1490,33 @@ async def cb_set(bot, update: CallbackQuery):
         pm_fchat=pm_file_chat,
         show_invite_link=show_invite_link
     )
-    
+
     append_db = await db.update_configs(chat_id, new)
-    
+
     if not append_db:
         text="Something Wrong Please Check Bot Log For More Information...."
         await update.answer(text=text, show_alert=True)
         return
-    
-    text=f"Your Request Was Updated Sucessfully....\nNow All Upcoming Results Will Show According To This Settings..."
-        
+
+    text = 'Your Request Was Updated Sucessfully....\nNow All Upcoming Results Will Show According To This Settings...'
+
+
     buttons = [
         [
             InlineKeyboardButton
                 (
                     "Back 🔙", callback_data=f"config({chat_id})"
                 ),
-            
+
             InlineKeyboardButton
                 (
                     "Close 🔐", callback_data="close"
                 )
         ]
     ]
-    
+
     reply_markup=InlineKeyboardMarkup(buttons)
-    
+
     await update.message.edit_text(
         text, reply_markup=reply_markup, parse_mode="html"
     )
@@ -1595,14 +1576,15 @@ async def cb_about(bot, update: CallbackQuery):
     global VERIFY
     chat_id = update.message.chat.id
     user_id = update.from_user.id
-    
+
     if user_id not in VERIFY.get(str(chat_id)):
         return
 
-    text=f"<i><u>Bot's Status</u></i>\n"
+    text = "<i><u>Bot's Status</u></i>\n"
     text+=f"\n<b><i>Bot's Uptime:</i></b> <code>{time_formatter(time.time() - start_uptime)}</code>\n"
-    text+=f"\n<b><i>Bot Funtion:</i></b> <i>Auto Filter Files</i>\n"
-    text+=f"""\n<b><i>Bot Support:</i></b> <a href="https://t.me/Mo_Tech_Group">@Mo_Tech_Group</a>\n"""
+    text += '\n<b><i>Bot Funtion:</i></b> <i>Auto Filter Files</i>\n'
+    text += '\n<b><i>Bot Support:</i></b> <a href="https://t.me/Mo_Tech_Group">@Mo_Tech_Group</a>\n'
+
     text+="""\n<b><i>Source Code:</i></b> <a href="https://github.com/PR0FESS0R-99/DonLee_Robot">Source</a>"""
 
     buttons = [
@@ -1611,7 +1593,7 @@ async def cb_about(bot, update: CallbackQuery):
                 (
                     "My Dev ⚡", url="https://t.me/MRK_YT"
                 ),
-                
+
             InlineKeyboardButton
                 (
                     "🔙 Back", callback_data="settings"
@@ -1624,9 +1606,9 @@ async def cb_about(bot, update: CallbackQuery):
                 )
         ]
     ]
-    
+
     reply_markup = InlineKeyboardMarkup(buttons)
-    
+
     await update.message.edit_text(
         text, reply_markup=reply_markup, parse_mode="html"
     )
@@ -1705,9 +1687,8 @@ def time_formatter(seconds: float) -> str:
     minutes, seconds = divmod(int(seconds),60)
     hours, minutes = divmod(minutes, 60)
     days, hours = divmod(hours, 24)
-    tmp = ((str(days) + "d, ") if days else "") + \
+    return ((str(days) + "d, ") if days else "") + \
         ((str(hours) + "h, ") if hours else "") + \
         ((str(minutes) + "m, ") if minutes else "") + \
         ((str(seconds) + "s") if seconds else "")
-    return tmp
 

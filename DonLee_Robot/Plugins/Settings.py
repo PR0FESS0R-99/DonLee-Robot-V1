@@ -19,7 +19,7 @@ async def settings(bot, update):
     user_id = update.from_user.id if update.from_user else None
     global VERIFY
 
-    if VERIFY.get(str(chat_id)) == None: # Make Admin's ID List
+    if VERIFY.get(str(chat_id)) is None: # Make Admin's ID List
         admin_list = []
         async for x in bot.iter_chat_members(chat_id=chat_id, filter="administrators"):
             admin_id = x.user.id 
@@ -27,22 +27,23 @@ async def settings(bot, update):
         admin_list.append(None)
         VERIFY[str(chat_id)] = admin_list
 
-    if not user_id in VERIFY.get(str(chat_id)): # Checks if user is admin of the chat
+    if user_id not in VERIFY.get(str(chat_id)): # Checks if user is admin of the chat
         return
-    
+
     bot_info = await bot.get_me()
     bot_first_name= bot_info.first_name
-    
+
     text =f"<i>{bot_first_name}'s</i> Settings Pannel.....\n"
-    text+=f"\n<i>You Can Use This Menu To Change Connectivity And Know Status Of Your Every Connected Channel, Change Filter Types, Configure Filter Results And To Know Status Of Your Group...</i>"
-    
+    text += '\n<i>You Can Use This Menu To Change Connectivity And Know Status Of Your Every Connected Channel, Change Filter Types, Configure Filter Results And To Know Status Of Your Group...</i>'
+
+
     buttons = [
         [
             InlineKeyboardButton
                 (
                     "Channels", callback_data=f"channel_list({chat_id})"
                 ), 
-            
+
             InlineKeyboardButton
                 (
                     "Filter Types", callback_data=f"types({chat_id})"
@@ -59,7 +60,7 @@ async def settings(bot, update):
                 (
                     "Status", callback_data=f"status({chat_id})"
                 ),
-            
+
             InlineKeyboardButton
                 (
                     "About", callback_data=f"about({chat_id})"
@@ -72,17 +73,17 @@ async def settings(bot, update):
                 )
         ]
     ]
-    
+
     reply_markup = InlineKeyboardMarkup(buttons)
-    
+
     await bot.send_message (
-        
+
         chat_id=chat_id, 
         text=text, 
         reply_markup=reply_markup, 
         parse_mode="html",
         reply_to_message_id=update.message_id
-        
+
         )
 
 

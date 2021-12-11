@@ -61,22 +61,22 @@ class Database:
         chats and total active chats of a chat
         """
         group_id = int(group_id)
-        
+
         total_filter = await self.tf_count(group_id)
-        
+
         chats = await self.find_chat(group_id)
         chats = chats.get("chat_ids")
         total_chats = len(chats) if chats is not None else 0
-        
+
         achats = await self.find_active(group_id)
         if achats not in (None, False):
             achats = achats.get("chats")
-            if achats == None:
+            if achats is None:
                 achats = []
         else:
             achats = []
         total_achats = len(achats)
-        
+
         return total_filter, total_chats, total_achats
 
 
@@ -176,19 +176,16 @@ class Database:
         Check whether if the given channel id is in db or not...
         """
         connections = self.cache.get(group_id)
-        
+
         if connections is None:
             connections = await self.col.find_one({'_id': group_id})
-        
-        check_list = []
-        
+
         if connections:
-            for x in connections["chat_ids"]:
-                check_list.append(int(x.get("chat_id")))
+            check_list = [int(x.get("chat_id")) for x in connections["chat_ids"]]
 
             if int(channel_id) in check_list:
                 return True
-        
+
         return False
 
 
@@ -293,13 +290,11 @@ class Database:
         A funtion to delete a channel from active chat colletion in db
         """
         templ = {"$pull": {"chats": dict(chat_id = channel_id)}}
-        
+
         try:
             await self.acol.update_one({"_id": group_id}, templ, False, True)
         except Exception as e:
             print(e)
-            pass
-        
         await self.refresh_acache(group_id)
         return True
 
@@ -345,14 +340,9 @@ class Database:
         chat id list in db
         """
         prev = await self.acol.find_one({"_id": group_id})
-        
+
         if prev:
-            for x in prev["chats"]:
-                if x["chat_id"] == channel_id:
-                    return True
-            
-            return False
-        
+            return any(x["chat_id"] == channel_id for x in prev["chats"])
         return False
 
 
@@ -428,32 +418,29 @@ class Database:
         chat = await self.find_chat(group_id)
         chat_accuracy = float(chat["configs"].get("accuracy", 0.80))
         achats = await self.find_active(group_id)
-        
-        achat_ids=[]
+
         if not achats:
             return False
-        
-        for chats in achats["chats"]:
-            achat_ids.append(chats.get("chat_id"))
-        
+
+        achat_ids = [chats.get("chat_id") for chats in achats["chats"]]
         filters = []
-                
+
         pipeline= {
             'group_id': int(group_id), '$text':{'$search': keyword}
         }
-        
-        
+
+
         db_list = self.fcol.find(
             pipeline, 
             {'score': {'$meta':'textScore'}} # Makes A New Filed With Match Score In Each Document
         )
 
         db_list.sort([("score", {'$meta': 'textScore'})]) # Sort all document on the basics of the score field
-        
+
         for document in await db_list.to_list(length=600):
             if document["score"] < chat_accuracy:
                 continue
-            
+
             if document["chat_id"] in achat_ids:
                 filters.append(document)
             else:
