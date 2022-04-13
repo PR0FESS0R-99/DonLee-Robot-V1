@@ -32,6 +32,7 @@
             "value": ""
         }
     },
+
     "buildpacks": [
         {
             "url": "heroku/python"
@@ -43,4 +44,8 @@
             "size": "free"
         }
     }
+}
+
+"FORCES_SUB":"update Channel UserName (Without @)"‚
+"value": ""
 }
